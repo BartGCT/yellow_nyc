@@ -1,0 +1,30 @@
+# This is a Databricks asset bundle definition for yellow_nyc.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: yellow_nyc
+  uuid: bacbe4f9-3cb5-4923-8f22-41b6652f68d1
+
+include:
+  - resources/*.yml
+  - clusters/*.yml
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-3550202921916598.18.azuredatabricks.net
+
+  prod:
+    mode: production
+    workspace:
+      host: https://adb-3550202921916598.18.azuredatabricks.net
+      # We explicitly deploy to /Workspace/Users/bpg8286_outlook.com#ext#@bpg8286outlook.onmicrosoft.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/bpg8286_outlook.com#ext#@bpg8286outlook.onmicrosoft.com/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: bpg8286_outlook.com#ext#@bpg8286outlook.onmicrosoft.com
+        level: CAN_MANAGE
